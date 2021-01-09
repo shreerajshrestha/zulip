@@ -5461,6 +5461,7 @@ def do_get_user_invites(user_profile: UserProfile) -> List[Dict[str, Any]]:
     invites = []
 
     for invitee in prereg_users:
+        if not invitee: continue
         invites.append(dict(email=invitee.email,
                             invited_by_user_id=invitee.referred_by.id,
                             invited=datetime_to_timestamp(invitee.invited_at),
@@ -5478,6 +5479,7 @@ def do_get_user_invites(user_profile: UserProfile) -> List[Dict[str, Any]]:
                                                              date_sent__gte=lowest_datetime)
     for confirmation_obj in multiuse_confirmation_objs:
         invite = confirmation_obj.content_object
+        if not invite: continue
         invites.append(dict(invited_by_user_id=invite.referred_by.id,
                             invited=datetime_to_timestamp(confirmation_obj.date_sent),
                             id=invite.id,
